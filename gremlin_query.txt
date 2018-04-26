@@ -84,4 +84,8 @@ ConfiguredGraphFactory.drop('vfm')
 
 def graph = ConfiguredGraphFactory.open("wordnet"); graph.tx().rollback(); mgmt = graph.openManagement(); name = mgmt.getPropertyKey('name'); mgmt.buildIndex('byNameUnique', Vertex.class).addKey(name).unique().buildCompositeIndex(); mgmt.commit(); mgmt.awaitGraphIndexStatus(graph, 'byNameUnique').call();
 
+# Reindex
+
+def graph = ConfiguredGraphFactory.open("wordnet"); graph.tx().rollback(); mgmt = graph.openManagement(); mgmt.awaitGraphIndexStatus(graph, 'byNameUnique').call(); mgmt = graph.openManagement(); mgmt.updateIndex(mgmt.getGraphIndex("byNameUnique"), SchemaAction.REINDEX).get(); mgmt.commit();
+
 ## Done ##
