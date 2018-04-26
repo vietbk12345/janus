@@ -1,0 +1,87 @@
+Map map = new HashMap(); map.put("storage.backend", "hbase"); map.put("storage.hostname", "192.168.106.53"); map.put("storage.hbase.ext.zookeeper.znode.parent", "/hbase-unsecure"); map.put("graph.graphname", "graph1"); ConfiguredGraphFactory.createConfiguration(new MapConfiguration(map));
+
+Map map = new HashMap(); map.put("storage.backend", "hbase"); map.put("storage.hostname", "192.168.106.53"); map.put("storage.hbase.ext.zookeeper.znode.parent", "/hbase-unsecure"); map.put("graph.graphname", "graph1"); ConfiguredGraphFactory.createTemplateConfiguration(new MapConfiguration(map));
+
+def g2 = ConfiguredGraphFactory.create("graph2");
+
+Map map = new HashMap(); map.put("storage.backend", "hbase"); map.put("storage.hostname", "192.168.106.53"); map.put("storage.hbase.ext.zookeeper.znode.parent", "/hbase-unsecure"); map.put("graph.graphname", "graph1"); ConfigurationGraphManagement.getInstance().createConfiguration(new MapConfiguration(map));
+
+
+
+####
+
+ConfiguredGraphFactory.getConfigurations()
+
+###
+
+INDEX
+
+def graph = ConfiguredGraphFactory.open("wordnet"); graph.tx().rollback(); mgmt = graph.openManagement(); name = mgmt.getPropertyKey('name'); mgmt.buildIndex('byNameUnique', Vertex.class).addKey(name).unique().buildCompositeIndex(); mgmt.commit(); mgmt.awaitGraphIndexStatus(graph, 'byNameUnique').call();
+
+def graph = ConfiguredGraphFactory.open("wordnet"); graph.tx().rollback(); mgmt = graph.openManagement(); mgmt.awaitGraphIndexStatus(graph, 'byNameUnique').call(); mgmt = graph.openManagement(); 
+mgmt.updateIndex(mgmt.getGraphIndex("byNameUnique"), SchemaAction.ENABLE_INDEX).get(); mgmt.commit();
+
+
+
+
+
+Map map = new HashMap(); map.put("storage.backend", "hbase"); map.put("storage.hostname", "192.168.106.53"); map.put("storage.hbase.ext.zookeeper.znode.parent", "/hbase-unsecure"); map.put("graph.graphname", "vfm") ;map.put("cache.db-cache", "true"); map.put("cache.db-cache-clean-wait", "20"); map.put("cache.db-cache-time", "180000"); map.put("cache.db-cache-size", "0.5"); ConfiguredGraphFactory.updateConfiguration('wordnet', new MapConfiguration(map));
+
+##
+
+bulk loading
+
+Map map = new HashMap(); map.put("storage.backend", "hbase"); map.put("storage.hostname", "192.168.106.53"); map.put("storage.hbase.ext.zookeeper.znode.parent", "/hbase-unsecure"); map.put("graph.graphname", "vfm"); map.put("cache.db-cache", "true"); map.put("cache.db-cache-clean-wait", "20"); map.put("cache.db-cache-time", "180000"); map.put("cache.db-cache-size", "0.5"); map.put("storage.batch-loading", "true"); map.put("storage.buffer-size", "2048"); ConfiguredGraphFactory.createConfiguration(new MapConfiguration(map));
+
+
+
+-----------------------------------------------------------------
+
+Bo lenh than thanh
+
+# remote
+
+:remote connect tinkerpop.server conf/remote.yaml session
+:remote console
+
+# Tao graph
+
+Map map = new HashMap(); map.put("storage.backend", "hbase"); map.put("storage.hostname", "192.168.106.53"); map.put("storage.hbase.ext.zookeeper.znode.parent", "/hbase-unsecure"); map.put("graph.graphname", "vfm"); map.put("cache.db-cache", "true"); map.put("cache.db-cache-clean-wait", "20"); map.put("cache.db-cache-time", "180000"); map.put("cache.db-cache-size", "0.5"); ConfiguredGraphFactory.createConfiguration(new MapConfiguration(map));
+
+# Them node
+
+def graph = ConfiguredGraphFactory.open('vfm'); graph.addVertex(T.lable, 'person', 'uid', '132433', 'name', 'viet'); graph.tx().commit();
+
+# Dem node
+
+def graph = ConfiguredGraphFactory.open('vfm'); def g = graph.traversal(); g.V().count();
+
+# Xoa node
+
+def graph = ConfiguredGraphFactory.open('vfm'); def g = graph.traversal(); g.V().drop().iterate();
+
+# update graph
+
+Map map = new HashMap(); map.put("storage.backend", "hbase"); map.put("storage.hostname", "192.168.106.53"); map.put("storage.hbase.ext.zookeeper.znode.parent", "/hbase-unsecure"); map.put("cache.db-cache", "true"); map.put("cache.db-cache-clean-wait", "20"); map.put("cache.db-cache-time", "180000"); map.put("cache.db-cache-size", "0.5"); map.put("storage.batch-loading", "true"); map.put("storage.buffer-size", "1048576"); ConfiguredGraphFactory.updateConfiguration('vfm', new MapConfiguration(map));
+
+# Them node lai lan nua de update schema
+
+def graph = ConfiguredGraphFactory.open('vfm'); graph.addVertex(T.lable, 'person', 'uid', '132433', 'name', 'viet'); graph.tx().commit();
+
+# Dem node
+
+def graph = ConfiguredGraphFactory.open('vfm'); def g = graph.traversal(); g.V().count();
+
+# Xoa node
+
+def graph = ConfiguredGraphFactory.open('vfm'); def g = graph.traversal(); g.V().drop().iterate();
+
+# Xoa graph
+
+ConfiguredGraphFactory.drop('vfm')
+
+# Danh index
+
+def graph = ConfiguredGraphFactory.open("wordnet"); graph.tx().rollback(); mgmt = graph.openManagement(); name = mgmt.getPropertyKey('name'); mgmt.buildIndex('byNameUnique', Vertex.class).addKey(name).unique().buildCompositeIndex(); mgmt.commit(); mgmt.awaitGraphIndexStatus(graph, 'byNameUnique').call();
+
+## Done ##
